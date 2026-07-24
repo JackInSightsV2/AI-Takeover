@@ -39,7 +39,7 @@
     <h1>Every model.<br>Every benchmark.<br>One table.</h1>
     <p class="lede">
       Sixty-one releases from eleven labs, from the November 2022 demo to this month's frontier, set against
-      twenty-one published evaluations. Models run across the top in release order, evaluations down the side.
+      twenty-four published evaluations. Models run across the top in release order, evaluations down the side.
       The table opens on the present — scroll left to travel back to 2022. The first column and the header row
       stay put, and the best published figure on each benchmark is highlighted.
     </p>
@@ -55,13 +55,47 @@
   </section>
 
   <section class="matrix wrap">
-    <div class="roster__bar" id="matrixBar">
-      <button class="filt" type="button" data-scope="all" aria-pressed="true">All 61</button>
-      <button class="filt" type="button" data-scope="scored" aria-pressed="false">Only models with scores</button>
-      <button class="filt" type="button" data-scope="open" aria-pressed="false">Open weights</button>
-      <span class="spacer"></span>
-      <span class="roster__count" id="matrixCount"></span>
+    <div class="controls">
+      <div class="ctl">
+        <span class="ctl__k">Company</span>
+        <div class="ctl__set" id="labBar">
+          <button class="filt" type="button" data-lab="*" aria-pressed="true">All labs</button>
+        </div>
+      </div>
+
+      <div class="ctl ctl--split" id="matrixBar">
+        <div>
+          <span class="ctl__k">Arrange</span>
+          <div class="ctl__set" id="arrangeGroup">
+            <button class="filt" type="button" data-arrange="time" aria-pressed="true">Chronological</button>
+            <button class="filt" type="button" data-arrange="rank" aria-pressed="false">Top models first</button>
+            <button class="filt" type="button" data-arrange="lab" aria-pressed="false">Grouped by company</button>
+          </div>
+        </div>
+        <div>
+          <span class="ctl__k">Show</span>
+          <div class="ctl__set" id="scopeGroup">
+            <button class="filt" type="button" data-scope="all" aria-pressed="true">Everything</button>
+            <button class="filt" type="button" data-scope="scored" aria-pressed="false">Scored only</button>
+            <button class="filt" type="button" data-scope="open" aria-pressed="false">Open weights</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctl__foot">
+        <span class="roster__count" id="matrixCount"></span>
+      </div>
+
+      <p class="ranknote" id="rankNote" hidden>
+        <strong>How this ranks.</strong> Each model scores the mean share of the best published figure across
+        the benchmarks it actually reports, and needs at least two published scores to rank at all — so no
+        model can top the table on one flattering number. It still rewards selective reporting: a model that
+        published only its two strongest results will sit higher than it deserves. Read it as a rough ordering,
+        not a league table.
+      </p>
     </div>
+
+    <p class="nores" id="matrixEmpty" hidden></p>
 
     <div class="matrixwrap" id="matrixWrap">
       <table class="matrix__table" id="matrixTable"></table>

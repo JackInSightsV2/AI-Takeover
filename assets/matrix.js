@@ -43,12 +43,43 @@
     if (vals.length) best[ev.id] = Math.max(...vals);
   });
 
+  /* ---- capability rank, for the "Top first" arrangement ----
+     Mean share of the best published figure across the benchmarks a model
+     actually reports. Needs two or more published scores to rank at all,
+     so a model that published one flattering number can't top the table.
+     It still favours models that report selectively — stated in the UI. */
+  const LABS = [...new Set(MODELS.map(m => m.lab))]
+    .sort((a, b) => MODELS.filter(x => x.lab === b).length - MODELS.filter(x => x.lab === a).length
+                 || a.localeCompare(b));
+
+  MODELS.forEach(m => {
+    const shares = [];
+    EVALS.forEach(ev => {
+      if (ev.text || !best[ev.id]) return;
+      const v = m.scores[ev.id];
+      if (typeof v === 'number') shares.push(v / best[ev.id]);
+    });
+    m._n = shares.length;
+    m._rank = shares.length >= 2
+      ? shares.reduce((a, b) => a + b, 0) / shares.length
+      : -1;
+  });
+
   /* ---- state ---- */
-  const state = { scope: 'all' };
+  const state = { scope: 'all', lab: '*', arrange: 'time' };
+
   function visible() {
-    if (state.scope === 'scored') return MODELS.filter(scored);
-    if (state.scope === 'open')   return MODELS.filter(m => m.open);
-    return MODELS;
+    let list = MODELS.filter(m => state.lab === '*' || m.lab === state.lab);
+    if (state.scope === 'scored') list = list.filter(scored);
+    if (state.scope === 'open')   list = list.filter(m => m.open);
+
+    if (state.arrange === 'rank') {
+      list = list.slice().sort((a, b) => b._rank - a._rank || b.y - a.y);
+    } else if (state.arrange === 'lab') {
+      list = list.slice().sort((a, b) =>
+        LABS.indexOf(a.lab) - LABS.indexOf(b.lab) || a.y - b.y);
+    }
+    return list;
   }
 
   /* ---- render ---- */
@@ -57,12 +88,34 @@
   function render() {
     const models = visible();
 
+    /* a legitimate combination can select nothing — say so rather than
+       rendering an empty grid (e.g. Anthropic + open weights) */
+    if (!models.length) {
+      table.innerHTML = '';
+      $('#matrixEmpty').hidden = false;
+      $('#matrixEmpty').textContent =
+        'No models match — ' + (state.lab === '*' ? 'that combination' : state.lab) +
+        (state.scope === 'open' ? ' has published no open-weight models.'
+                                : ' has nothing matching that filter.');
+      $('#matrixCount').textContent = '0 models';
+      return;
+    }
+    $('#matrixEmpty').hidden = true;
+
     let head = '<thead><tr><th class="mx-corner">Evaluation</th>';
-    models.forEach(m => {
-      head += '<th class="mx-model' + (m.open ? ' is-open' : '') + '">' +
+    models.forEach((m, i) => {
+      /* when grouped by lab, mark where each company's block begins */
+      const newLab = state.arrange === 'lab' && (i === 0 || models[i - 1].lab !== m.lab);
+      head += '<th class="mx-model' + (m.open ? ' is-open' : '') + '"' +
+                (newLab ? ' data-labstart' : '') + '>' +
+                (newLab ? '<span class="mx-model__lab">' + esc(m.lab) + '</span>' : '') +
                 '<a href="models/' + m.slug + '.html">' +
                   '<span class="mx-model__n">' + esc(m.m) + '</span>' +
-                  '<span class="mx-model__d">' + esc(m.d) + '</span>' +
+                  '<span class="mx-model__d">' +
+                    (state.arrange === 'rank' && m._rank >= 0
+                      ? Math.round(m._rank * 100) + '% of best'
+                      : esc(m.d)) +
+                  '</span>' +
                 '</a>' +
               '</th>';
     });
@@ -84,12 +137,14 @@
           '<span class="mx-eval__n">' + esc(ev.name) + '</span>' +
           '<span class="mx-eval__c">' + filled + '/' + models.length + '</span>' +
         '</th>';
-      models.forEach(m => {
+      models.forEach((m, i) => {
+        const newLab = state.arrange === 'lab' && (i === 0 || models[i - 1].lab !== m.lab);
+        const edge = newLab ? ' data-labstart' : '';
         const raw = m.scores[ev.id];
         const v = fmt(raw, ev);
-        if (v == null) { body += '<td class="mx-na"></td>'; return; }
+        if (v == null) { body += '<td class="mx-na"' + edge + '></td>'; return; }
         const lead = (!ev.text && raw === best[ev.id]) ? ' mx-best' : '';
-        body += '<td class="mx-v' + lead + '">' + v + '</td>';
+        body += '<td class="mx-v' + lead + '"' + edge + '>' + v + '</td>';
       });
       body += '</tr>';
     });
@@ -107,12 +162,37 @@
     wrap.scrollLeft = wrap.scrollWidth;
   }
 
+  /* ---- lab chips, generated from whatever labs exist ---- */
+  const labBar = $('#labBar');
+  labBar.insertAdjacentHTML('beforeend', LABS.map(lab =>
+    '<button class="filt" type="button" data-lab="' + esc(lab) + '" aria-pressed="false">' +
+      esc(lab) + '<i>' + MODELS.filter(m => m.lab === lab).length + '</i></button>'
+  ).join(''));
+
+  function press(container, el) {
+    container.querySelectorAll('.filt').forEach(x =>
+      x.setAttribute('aria-pressed', String(x === el)));
+  }
+
+  labBar.addEventListener('click', (e) => {
+    const b = e.target.closest('.filt');
+    if (!b) return;
+    state.lab = b.dataset.lab;
+    press(labBar, b);
+    render();
+  });
+
   $('#matrixBar').addEventListener('click', (e) => {
     const b = e.target.closest('.filt');
     if (!b) return;
-    state.scope = b.dataset.scope;
-    document.querySelectorAll('#matrixBar .filt').forEach(x =>
-      x.setAttribute('aria-pressed', String(x === b)));
+    if (b.dataset.arrange) {
+      state.arrange = b.dataset.arrange;
+      press($('#arrangeGroup'), b);
+    } else {
+      state.scope = b.dataset.scope;
+      press($('#scopeGroup'), b);
+    }
+    $('#rankNote').hidden = state.arrange !== 'rank';
     render();
   });
 

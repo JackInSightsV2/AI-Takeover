@@ -84,9 +84,16 @@ tools/check-links.js  fails the build on a broken link or data/page drift
 ### The three page types
 
 - **`index.html`** — the slider. Drag from Human to Machine and watch occupations move.
-- **`models.html`** — the matrix. Models across the top in release order, evaluations down the
-  side. Sticky header row and first column; opens scrolled to the present, scroll left for history.
-  Filter to scored-only or open-weight. Best published figure per benchmark is highlighted.
+- **`models.html`** — the matrix. 61 models across the top, 24 evaluations down the side. Sticky
+  header row and first column; opens scrolled to the present, scroll left for history. Best published
+  figure per benchmark is highlighted. Filters:
+  - **Company** — a chip per lab, with counts, generated from the data.
+  - **Arrange** — chronological, top models first, or grouped by company.
+  - **Show** — everything, scored only, or open weights.
+
+  "Top models first" ranks by the mean share of the best published figure across the benchmarks each
+  model actually reports, and requires two or more published scores to rank at all. It still rewards
+  selective reporting, and the page says so in place rather than presenting it as a league table.
 - **`models/<slug>.html`** — one page per model, all identical in format: specs, every published
   score with a bar relative to the field best, index position, and previous/next by release date.
   Generated, never hand-edited.

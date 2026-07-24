@@ -515,6 +515,26 @@ a.site__mark:hover{ color:var(--ai); }
   text-transform:uppercase; color:var(--ink-3);
 }
 
+/* matrix controls -------------------------------------------------- */
+.controls{ margin-bottom:24px; padding-bottom:22px; border-bottom:1px solid var(--line); }
+.ctl{ margin-bottom:16px; }
+.ctl--split{ display:flex; flex-wrap:wrap; gap:24px 44px; }
+.ctl__k{
+  display:block; margin-bottom:9px;
+  font-family:var(--mono); font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3);
+}
+.ctl__set{ display:flex; flex-wrap:wrap; gap:7px; }
+.ctl__set .filt i{
+  font-style:normal; margin-left:7px; opacity:.55; font-size:9px;
+}
+.ctl__foot{ display:flex; justify-content:flex-end; }
+.ranknote{
+  margin:16px 0 0; padding:14px 16px; border-left:2px solid var(--ai);
+  background:var(--ai-soft); border-radius:0 8px 8px 0;
+  font-size:13px; color:var(--ink-2); max-width:80ch; line-height:1.6;
+}
+.ranknote[hidden]{ display:none; }
+
 /* ========================== MATRIX =============================== */
 .matrix{ padding-bottom:clamp(50px,8vh,90px); }
 .matrixwrap{
@@ -554,6 +574,13 @@ a.site__mark:hover{ color:var(--ai); }
 .mx-model.is-open .mx-model__n::after{
   content:'○'; font-size:8px; margin-left:5px; color:var(--ai); vertical-align:middle;
 }
+.mx-model__lab{
+  display:block; margin-bottom:7px; padding-bottom:5px; border-bottom:1px solid var(--ai);
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ai);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+/* company divider when the columns are grouped by lab */
+.matrix__table [data-labstart]{ border-left:2px solid var(--line-2); }
 
 .mx-eval{ padding:9px 14px; font-weight:400; border-bottom:1px solid var(--line); }
 .mx-eval__n{ display:block; font-size:12.5px; color:var(--ink); line-height:1.35; }
@@ -646,6 +673,7 @@ a.site__mark:hover{ color:var(--ai); }
   text-transform:uppercase; color:var(--ai);
 }
 
+.nores[hidden]{ display:none; }
 .nores{
   border:1px dashed var(--line-2); border-radius:var(--r); padding:26px 24px;
   font-size:14px; color:var(--ink-2); max-width:70ch;
