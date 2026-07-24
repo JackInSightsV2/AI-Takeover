@@ -5,7 +5,7 @@ An interactive, benchmark-grounded reading of how much human knowledge work fron
 Drag a single slider from **Human** to **Machine**. A robot fills. Thirty-six occupations move between a
 *Ceded* column and a *Held* column, and each one opens to show which of its constituent tasks have already
 crossed. Seventeen stops along the slider are dated model cohorts with their published benchmark figures
-attached, and a roster of **43 releases from 11 labs** fills in beneath as you move the line.
+attached, and a roster of **61 releases from 11 labs** fills in beneath as you move the line.
 
 Light theme by default, with a dark toggle in the header; the choice persists.
 
@@ -69,7 +69,7 @@ After that the workflow does the rest; it can also be run by hand from the Actio
 
 ```
 index.html            the interactive index — slider, robot, ledger, roster
-models.html           the evaluation matrix — 61 models across, 21 evals down
+models.html           the evaluation matrix — 61 models across, 24 evals down
 models/<slug>.html    one generated page per model (61 of them)
 assets/data.js        MILESTONES, GATES, JOBS
 assets/models.js      EVALS + MODELS — the roster and every published score
@@ -108,12 +108,13 @@ node tools/check-links.js  # verifies links and data/page parity
 `build.js` deletes stale pages first, so removing a model from the data removes its page. CI runs
 both on every push, so the deployed site cannot drift from `assets/models.js`.
 
-To change a figure, add a model or move an occupation, edit `assets/data.js` only.
+To change a figure, add a model or move an occupation, edit the data files only — never the HTML.
 
 - `MILESTONES` — 17 stops. Each carries its models and the raw benchmark values shown in the console.
   `major: true` gives a stop a printed label on the track; every stop still gets a mark and a tooltip.
-- `MODELS` — 43 releases. `idx` places a model on the 0–100 scale, which is what makes the roster
-  dim and highlight as the slider moves. `swe` / `aa` / `gdp` are `null` where the lab published nothing.
+- `MODELS` — 61 releases, in `assets/models.js` alongside `EVALS`. `idx` places a model on the 0–100
+  scale, which is what makes the roster dim and highlight as the slider moves. A key is simply absent
+  from `scores` where the lab published nothing.
 - `JOBS` — 36 occupations, each with a crossing point, the gate holding it, the evidence behind the
   placement, and constituent tasks with their own crossing points.
 
