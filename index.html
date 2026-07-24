@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Displacement Index — how much of human work AI has taken</title>
+<meta name="description" content="An interactive, benchmark-grounded reading of how much human knowledge work frontier AI can now do — from GPT-3.5 to Opus 5, Fable 5, GPT-5.6 Sol and Kimi K3.">
+<meta name="theme-color" content="#08080a">
+<meta property="og:title" content="The Displacement Index">
+<meta property="og:description" content="Drag the slider from human to machine. Every position is anchored to a published benchmark.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%2308080a'/><rect x='24' y='30' width='52' height='40' rx='12' fill='none' stroke='%236fd6ee' stroke-width='6'/><circle cx='39' cy='50' r='5' fill='%236fd6ee'/><circle cx='61' cy='50' r='5' fill='%236fd6ee'/><path d='M50 30V16' stroke='%236fd6ee' stroke-width='6' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('di-theme')==='dark'?'dark':'light')}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap site__inner">
+    <a class="site__mark" href="index.html">The&nbsp;Displacement&nbsp;Index</a>
+    <span class="site__right">
+      <span class="site__meta"><span class="dot"></span><span class="site__long">Evidence current to&nbsp;</span>July&nbsp;2026</span>
+      <nav class="site__nav">
+        <a href="index.html" aria-current="page">The index</a>
+        <a href="models.html">Matrix</a>
+      </nav>
+      <button class="themer" id="themer" type="button" aria-label="Switch to dark theme" title="Switch theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M2 12h2M20 12h2M4.9 19.1l1.5-1.5M17.6 6.4l1.5-1.5"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ─────────────────────────── HERO ─────────────────────────── -->
+  <section class="hero wrap">
+    <p class="eyebrow">A measurement, not a prediction</p>
+    <h1>
+      Somewhere on this line<br>
+      sits the <em>boundary</em> between<br>
+      work you do and work it does.
+    </h1>
+    <p class="lede">
+      In the ten months to July 2026, SWE-bench Verified went from 74.9% to 97%. The length of task a
+      frontier agent can finish unsupervised at even odds went from two hours to most of a day, and its
+      doubling time compressed from seven months to four. This page turns those published numbers into
+      one question: <strong>where is the line right now, and which side of it is your job on?</strong>
+    </p>
+    <a class="cue" href="#instrument">
+      <span>Move the line</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+  </section>
+
+  <!-- ────────────────────────── INSTRUMENT ────────────────────── -->
+  <section class="instrument wrap" id="instrument">
+
+    <div class="panel">
+
+      <div class="readout">
+
+        <!-- robot -->
+        <figure class="bot" aria-hidden="true">
+          <svg viewBox="0 0 200 268" class="bot__svg" role="img">
+            <defs>
+              <clipPath id="fillClip">
+                <rect id="fillRect" x="0" y="268" width="200" height="268"/>
+              </clipPath>
+              <linearGradient id="fillGrad" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%"  stop-color="var(--ai-deep)"/>
+                <stop offset="100%" stop-color="var(--ai)"/>
+              </linearGradient>
+              <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="5" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+
+              <!-- robot geometry, defined once -->
+              <g id="botGeo">
+                <path d="M100 30 V16"/>
+                <circle cx="100" cy="11" r="6"/>
+                <rect x="52" y="30" width="96" height="76" rx="22"/>
+                <rect x="66" y="50" width="68" height="34" rx="14"/>
+                <circle cx="84" cy="67" r="6.5"/>
+                <circle cx="116" cy="67" r="6.5"/>
+                <path d="M88 106v10M112 106v10"/>
+                <rect x="46" y="116" width="108" height="94" rx="18"/>
+                <rect x="70" y="140" width="60" height="34" rx="8"/>
+                <path d="M80 150h40M80 159h40M80 168h26"/>
+                <rect x="18" y="126" width="22" height="62" rx="11"/>
+                <rect x="160" y="126" width="22" height="62" rx="11"/>
+                <rect x="60" y="218" width="30" height="38" rx="9"/>
+                <rect x="110" y="218" width="30" height="38" rx="9"/>
+              </g>
+            </defs>
+
+            <!-- human / unclaimed state -->
+            <g class="bot__ghost"><use href="#botGeo"/></g>
+            <!-- AI-claimed state -->
+            <g class="bot__fill" clip-path="url(#fillClip)"><use href="#botGeo"/></g>
+            <!-- waterline -->
+            <line id="waterline" class="bot__line" x1="6" y1="268" x2="194" y2="268"/>
+          </svg>
+          <figcaption class="bot__cap">Share of measured expert work<br>matched or beaten by frontier AI</figcaption>
+        </figure>
+
+        <!-- numbers -->
+        <div class="figures">
+          <div class="figures__split">
+            <div class="fig fig--ai">
+              <span class="fig__k">Machine</span>
+              <span class="fig__v" id="valAI">53</span><span class="fig__pc">%</span>
+            </div>
+            <div class="fig fig--human">
+              <span class="fig__k">Human</span>
+              <span class="fig__v" id="valHuman">47</span><span class="fig__pc">%</span>
+            </div>
+          </div>
+
+          <div class="era">
+            <div class="era__top">
+              <span class="era__date" id="eraDate">Jul 2026</span>
+              <span class="era__tag" id="eraTag">Now</span>
+            </div>
+            <div class="chips" id="eraModels"></div>
+            <p class="era__head" id="eraHead"></p>
+          </div>
+
+          <dl class="metrics" id="metrics"></dl>
+        </div>
+      </div>
+
+      <!-- ─────────── the slider ─────────── -->
+      <div class="slider" id="slider">
+        <div class="slider__poles">
+          <span class="pole pole--human"><i></i>Human</span>
+          <span class="pole pole--ai">Machine<i></i></span>
+        </div>
+
+        <div class="track">
+          <div class="track__base"></div>
+          <div class="track__fill" id="trackFill"></div>
+          <div class="track__ticks" id="ticks"></div>
+          <div class="track__knob" id="knob"></div>
+          <input id="range" type="range" min="0" max="100" step="0.5" value="53"
+                 aria-label="Displacement index: drag from fully human to fully machine">
+        </div>
+
+        <div class="slider__foot">
+          <span>Drag, or use ← →. Every mark is a dated release; labelled ones are the turning points.</span>
+          <button class="reset" id="resetBtn" type="button">Return to today</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── LEDGER ───────────────────────── -->
+  <section class="ledger wrap" id="ledger">
+    <div class="sec-head">
+      <h2>The ledger</h2>
+      <p>Thirty-six occupations, placed against the index. A role crosses when the majority of its measured
+         task-hours are matched or beaten by frontier AI — not when the job title disappears. Open one to
+         see which of its tasks have already gone.</p>
+    </div>
+
+    <div class="cols">
+      <div class="col col--ai">
+        <div class="col__head">
+          <h3>Ceded</h3>
+          <span class="count" id="countAI">0</span>
+        </div>
+        <ul class="joblist" id="listAI"></ul>
+        <p class="empty" id="emptyAI">Nothing yet. The line is still to the left of every occupation measured.</p>
+      </div>
+
+      <div class="col col--human">
+        <div class="col__head">
+          <h3>Held</h3>
+          <span class="count" id="countHuman">0</span>
+        </div>
+        <ul class="joblist" id="listHuman"></ul>
+        <p class="empty" id="emptyHuman">Nothing left. Every measured occupation is on the other side.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── ROSTER ───────────────────────── -->
+  <section class="roster wrap" id="roster">
+    <div class="sec-head">
+      <h2>Every model that moved the line</h2>
+      <p>Forty-three releases from eleven labs, from the November 2022 demo to this month's frontier.
+         Sort any column, filter by lab, or isolate the open-weight models. The roster tracks the slider:
+         anything not yet released at that point on the line dims out, and the models defining the frontier
+         at that moment are marked&nbsp;<span style="color:var(--ai)">▸</span>.</p>
+    </div>
+
+    <div class="roster__bar" id="rosterBar">
+      <button class="filt" type="button" data-lab="*" aria-pressed="true">All labs</button>
+      <button class="filt" type="button" data-open="1" aria-pressed="false">Open weights only</button>
+      <span class="spacer"></span>
+      <span class="roster__count" id="rosterCount"></span>
+    </div>
+
+    <div class="rosterwrap">
+      <table>
+        <colgroup>
+          <col class="c-date"><col class="c-model"><col class="c-lab">
+          <col class="c-num"><col class="c-num"><col class="c-num">
+          <col class="c-w"><col>
+        </colgroup>
+        <thead>
+          <tr>
+            <th data-sort="y" data-dir="asc">Released</th>
+            <th data-sort="m">Model</th>
+            <th data-sort="lab">Lab</th>
+            <th data-sort="swe" class="num" title="SWE-bench Verified, % resolved">SWE-bench</th>
+            <th data-sort="aa"  class="num" title="Artificial Analysis Intelligence Index">AA Index</th>
+            <th data-sort="gdp" class="num" title="GDPval-AA Elo; human expert baseline = 1000">GDPval</th>
+            <th data-sort="open">Weights</th>
+            <th>What it changed</th>
+          </tr>
+        </thead>
+        <tbody id="rosterBody"></tbody>
+      </table>
+    </div>
+
+    <p class="foot__note" style="margin-top:20px">
+      Blank cells mean the lab did not publish that figure, not that the model scored zero. SWE-bench Verified
+      and the Artificial Analysis Intelligence Index are self-reported or independently replicated depending on
+      the model; GDPval-AA is a third-party evaluation with a human-expert baseline fixed at 1000&nbsp;Elo.
+    </p>
+  </section>
+
+  <!-- ────────────────────────── EVIDENCE ──────────────────────── -->
+  <section class="evidence wrap">
+    <div class="sec-head">
+      <h2>The evidence</h2>
+      <p>Every position on the slider is anchored to one of these. Where a figure is extrapolated rather
+         than measured it is marked&nbsp;<span class="est">†</span>.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Benchmark</th><th>What it actually measures</th><th class="num">Best, Jul 2026</th><th>Holder</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.swebench.com/" target="_blank" rel="noopener">SWE-bench Verified</a></td>
+            <td>Resolving real GitHub issues in real repositories, validated by the project's own tests</td>
+            <td class="num">97.0%</td><td>Claude Opus 5</td>
+          </tr>
+          <tr>
+            <td><a href="https://artificialanalysis.ai/evaluations/gdpval-aa" target="_blank" rel="noopener">GDPval-AA v2</a></td>
+            <td>Blinded expert preference on real work products across 44 occupations. Human expert = 1000 Elo</td>
+            <td class="num">1861 Elo</td><td>Claude Opus 5 (max effort)</td>
+          </tr>
+          <tr>
+            <td><a href="https://openai.com/index/gdpval/" target="_blank" rel="noopener">GDPval (original)</a></td>
+            <td>1,320 deliverables, ~7 expert-hours each, authored by professionals with 14+ years in role</td>
+            <td class="num">47.6%</td><td>Claude Opus 4.1, Sep 2025 — win-or-tie</td>
+          </tr>
+          <tr>
+            <td><a href="https://metr.org/time-horizons/" target="_blank" rel="noopener">METR 50% time horizon</a></td>
+            <td>Length of task, in human expert time, an agent finishes unsupervised half the time</td>
+            <td class="num">~17 hr <span class="est">†</span></td><td>Extrapolated from ~12 hr, May 2026</td>
+          </tr>
+          <tr>
+            <td><a href="https://arcprize.org/" target="_blank" rel="noopener">ARC-AGI-3</a></td>
+            <td>Novel problems with no precedent in training — the closest proxy for genuine generalisation</td>
+            <td class="num">30.2%</td><td>Claude Opus 5 — ~4× the next model</td>
+          </tr>
+          <tr>
+            <td>Frontier-Bench v0.1</td>
+            <td>Long-running agentic work in a terminal, judged end to end</td>
+            <td class="num">43.3%</td><td>Claude Opus 5 (Opus 4.8: 18.7%)</td>
+          </tr>
+          <tr>
+            <td>SWE-Bench Pro</td>
+            <td>Harder, contamination-resistant engineering tasks</td>
+            <td class="num">80.0%</td><td>Claude Fable 5 (GPT-5.6 Sol: 64.6%)</td>
+          </tr>
+          <tr>
+            <td>Terminal-Bench 2.1</td>
+            <td>Command-line competence under real failure conditions</td>
+            <td class="num">88.3</td><td>Kimi K3 — open weights</td>
+          </tr>
+          <tr>
+            <td>BrowseComp</td>
+            <td>Multi-hop research across the live open web</td>
+            <td class="num">91.2</td><td>Kimi K3</td>
+          </tr>
+          <tr>
+            <td>SWE Marathon</td>
+            <td>Engineering tasks spanning days rather than minutes</td>
+            <td class="num">42.0</td><td>Kimi K3</td>
+          </tr>
+          <tr>
+            <td>OSWorld 2.0</td>
+            <td>Operating a real desktop — the ceiling on digital, non-embodied work</td>
+            <td class="num">best-in-class</td><td>Claude Opus 5, at ~⅓ the cost of Fable 5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ground">
+      <h3>And what it has actually done to employment</h3>
+      <div class="ground__grid">
+        <div class="stat"><span class="stat__v">49%</span><p>of occupations now have at least a quarter of their tasks performed with Claude. About 4% have three quarters of them.<cite>Anthropic Economic Index, 2026</cite></p></div>
+        <div class="stat"><span class="stat__v">−35%</span><p>US entry-level job postings over 18 months. Junior software and data postings fell far further.<cite>Labour market analyses, 2026</cite></p></div>
+        <div class="stat"><span class="stat__v">−9–10%</span><p>junior headcount at firms adopting generative AI, with senior headcount flat.<cite>Harvard, 2026</cite></p></div>
+        <div class="stat"><span class="stat__v">83%</span><p>of S&amp;P Global 1200 constituents ran lower headcount in Jan 2026 than Jan 2025.<cite>S&amp;P Global</cite></p></div>
+        <div class="stat"><span class="stat__v">57 / 43</span><p>the split between AI used to augment a worker and AI used to replace the task outright. It has been moving toward automation in API traffic.<cite>Anthropic Economic Index</cite></p></div>
+        <div class="stat"><span class="stat__v">5.6%</span><p>unemployment among US graduates aged 22–27 — among the highest in over a decade, and above the national rate.<cite>New York Fed / BLS</cite></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────── METHOD ───────────────────────── -->
+  <section class="method wrap" id="method">
+    <div class="sec-head">
+      <h2>Method, and where it stops being measurement</h2>
+    </div>
+
+    <div class="method__grid">
+      <article>
+        <h3>What the index is</h3>
+        <p>A composite of three published signals, equally weighted: <strong>expert-parity rate</strong>
+           (GDPval win-or-tie, and GDPval-AA Elo above the 1000-point human baseline), <strong>autonomy</strong>
+           (METR's 50% time horizon, log-scaled — each doubling is one step, not one hour), and
+           <strong>deployment reach</strong> (the Anthropic Economic Index share of occupations with a
+           quarter or more of their tasks running through the model).</p>
+      </article>
+      <article>
+        <h3>What it is not</h3>
+        <p>It is not an unemployment forecast. A task being matchable is necessary for displacement and
+           nowhere near sufficient — cost, liability, procurement, regulation, union agreements and plain
+           institutional inertia all sit between the two. The index measures the pressure on the door, not
+           whether the door has opened.</p>
+      </article>
+      <article>
+        <h3>Where the placements are judgement</h3>
+        <p>Benchmark figures are cited and checkable. The crossing point assigned to each occupation is
+           <em>derived</em>: it reads GDPval's occupational findings, the shape of the role's task mix, and
+           the gate holding it, then places it on the same scale. Reasonable people would move several of
+           them by ten points. Nobody should move them by fifty.</p>
+      </article>
+      <article>
+        <h3>The two projected stops</h3>
+        <p>2027 and 2028 are the four-month doubling continued, nothing more, and they are labelled as such.
+           METR's own trend ran at seven months for six years before compressing; it may decompress again.
+           Treat those two positions as the shape of an argument rather than a claim about the world.</p>
+      </article>
+      <article>
+        <h3>Why the trades sit where they do</h3>
+        <p>Every frontier benchmark on this page measures work that arrives and departs through a screen.
+           OSWorld is the ceiling of that category. There is no equivalent, at any comparable maturity, for
+           a fuse box in a loft or a ward round at 3am — and robotics is not on the same curve as language
+           models.</p>
+      </article>
+      <article>
+        <h3>The honest caveat about benchmarks</h3>
+        <p>Saturation is not competence. SWE-bench Verified at 97% mostly tells you the benchmark is finished,
+           not that engineering is. Contamination, scaffold-tuning and grader leniency all inflate scores;
+           adversarial re-tests consistently find real success rates below headline ones. The index leans
+           hardest on GDPval and METR precisely because they are the two hardest to game.</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="foot__lead">Sources</p>
+    <ul class="srcs">
+      <li><a href="https://openai.com/index/gdpval/" target="_blank" rel="noopener">OpenAI — GDPval</a></li>
+      <li><a href="https://artificialanalysis.ai/evaluations/gdpval-aa" target="_blank" rel="noopener">Artificial Analysis — GDPval-AA v2 leaderboard</a></li>
+      <li><a href="https://metr.org/time-horizons/" target="_blank" rel="noopener">METR — Task-completion time horizons</a></li>
+      <li><a href="https://www.anthropic.com/research/anthropic-economic-index-january-2026-report" target="_blank" rel="noopener">Anthropic — Economic Index</a></li>
+      <li><a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener">Anthropic — Claude Opus 5</a></li>
+      <li><a href="https://www.swebench.com/" target="_blank" rel="noopener">SWE-bench</a></li>
+      <li><a href="https://arcprize.org/" target="_blank" rel="noopener">ARC Prize</a></li>
+      <li><a href="https://epoch.ai/benchmarks" target="_blank" rel="noopener">Epoch AI — Benchmark tracking</a></li>
+    </ul>
+    <p class="foot__note">
+      Benchmark figures are quoted as published by their maintainers and press coverage at the dates shown.
+      Occupational crossing points are the author's derivation, not a published dataset. Open source —
+      corrections and pull requests welcome.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/models.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

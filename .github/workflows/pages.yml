@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# allow the workflow to publish to Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# one deploy at a time; don't cancel a run that's mid-publish
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # regenerate the per-model pages from assets/models.js so the
+      # deployed site can never drift from the data
+      - name: Build model pages
+        run: node tools/build.js
+
+      - name: Check the build left nothing stale
+        run: |
+          if [ -n "$(git status --porcelain models/)" ]; then
+            echo "::warning::models/ differs from the committed output — deploying the freshly built version."
+            git --no-pager diff --stat models/ || true
+          fi
+
+      - name: Verify internal links
+        run: node tools/check-links.js
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

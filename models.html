@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The evaluation matrix — every model, every benchmark</title>
+<meta name="description" content="Every frontier model since November 2022 against every published benchmark, in one table. Models across the top, evaluations down the side.">
+<meta name="theme-color" content="#fbfaf8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23fbfaf8'/><rect x='24' y='30' width='52' height='40' rx='12' fill='none' stroke='%230d7d94' stroke-width='6'/><circle cx='39' cy='50' r='5' fill='%230d7d94'/><circle cx='61' cy='50' r='5' fill='%230d7d94'/><path d='M50 30V16' stroke='%230d7d94' stroke-width='6' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('di-theme')==='dark'?'dark':'light')}catch(e){document.documentElement.setAttribute('data-theme','light')}</script>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap site__inner">
+    <a class="site__mark" href="index.html">The&nbsp;Displacement&nbsp;Index</a>
+    <span class="site__right">
+      <nav class="site__nav">
+        <a href="index.html">The index</a>
+        <a href="models.html" aria-current="page">Matrix</a>
+      </nav>
+      <button class="themer" id="themer" type="button" aria-label="Switch to dark theme" title="Switch theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M2 12h2M20 12h2M4.9 19.1l1.5-1.5M17.6 6.4l1.5-1.5"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </span>
+  </div>
+</header>
+
+<main>
+  <section class="hero hero--tight wrap">
+    <p class="eyebrow">The evaluation matrix</p>
+    <h1>Every model.<br>Every benchmark.<br>One table.</h1>
+    <p class="lede">
+      Sixty-one releases from eleven labs, from the November 2022 demo to this month's frontier, set against
+      twenty-one published evaluations. Models run across the top in release order, evaluations down the side.
+      The table opens on the present — scroll left to travel back to 2022. The first column and the header row
+      stay put, and the best published figure on each benchmark is highlighted.
+    </p>
+
+    <div class="coverage" id="coverage"></div>
+
+    <p class="lede lede--small">
+      <strong>Most of this table is empty, and that is the finding.</strong> Labs publish the benchmarks they
+      win. A blank cell means no published figure, never a zero — and never a number we inferred, interpolated
+      or estimated to fill a gap. The two evaluations with the broadest independent coverage, GDPval and METR,
+      are also the two hardest to game, which is why the index leans on them.
+    </p>
+  </section>
+
+  <section class="matrix wrap">
+    <div class="roster__bar" id="matrixBar">
+      <button class="filt" type="button" data-scope="all" aria-pressed="true">All 61</button>
+      <button class="filt" type="button" data-scope="scored" aria-pressed="false">Only models with scores</button>
+      <button class="filt" type="button" data-scope="open" aria-pressed="false">Open weights</button>
+      <span class="spacer"></span>
+      <span class="roster__count" id="matrixCount"></span>
+    </div>
+
+    <div class="matrixwrap" id="matrixWrap">
+      <table class="matrix__table" id="matrixTable"></table>
+    </div>
+
+    <p class="foot__note" style="margin-top:22px">
+      Figures are quoted as published by their maintainers, the releasing lab, or independent evaluators, at the
+      dates shown. Where a lab published a range or revised a score after launch, the note on the model's own
+      page says so. Every model name links to its page.
+      <span class="est">†</span> marks an extrapolation rather than a measurement.
+    </p>
+  </section>
+
+  <section class="ledger wrap">
+    <div class="sec-head">
+      <h2>All models, by lab</h2>
+      <p>Every release has its own page: what it scored, what it changed, where it sits on the Displacement
+         Index, and what shipped immediately before and after it.</p>
+    </div>
+    <div class="labgrid" id="labGrid"></div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="foot__lead">Sources</p>
+    <ul class="srcs">
+      <li><a href="https://openai.com/index/gdpval/" target="_blank" rel="noopener">OpenAI — GDPval</a></li>
+      <li><a href="https://artificialanalysis.ai/evaluations/gdpval-aa" target="_blank" rel="noopener">Artificial Analysis</a></li>
+      <li><a href="https://metr.org/time-horizons/" target="_blank" rel="noopener">METR — Time horizons</a></li>
+      <li><a href="https://www.swebench.com/" target="_blank" rel="noopener">SWE-bench</a></li>
+      <li><a href="https://arcprize.org/" target="_blank" rel="noopener">ARC Prize</a></li>
+      <li><a href="https://epoch.ai/benchmarks" target="_blank" rel="noopener">Epoch AI</a></li>
+    </ul>
+    <p class="foot__note">
+      Benchmark figures belong to their respective maintainers and are quoted as published. Open source —
+      corrections and pull requests welcome.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/models.js"></script>
+<script src="assets/matrix.js"></script>
+</body>
+</html>
