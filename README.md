@@ -79,6 +79,8 @@ assets/matrix.js      matrix page: transposed table, filters, coverage
 assets/theme.js       theme toggle for the generated model pages
 tools/build.js        generates models/*.html from assets/models.js
 tools/check-links.js  fails the build on a broken link or data/page drift
+tools/audit.js        reports dataset gaps, to target a research refresh
+.claude/skills/       /refresh-models — research and update the dataset
 ```
 
 ### The three page types
@@ -98,12 +100,28 @@ tools/check-links.js  fails the build on a broken link or data/page drift
   score with a bar relative to the field best, index position, and previous/next by release date.
   Generated, never hand-edited.
 
+### Keeping it current
+
+There is a Claude Code skill for the refresh cycle: **`/refresh-models`**
+(`.claude/skills/refresh-models/SKILL.md`). It audits the dataset, researches models released since
+the last pass and scores newly published for models already listed, applies them to
+`assets/models.js`, rebuilds, verifies, and reports what it deliberately left blank.
+
+The skill encodes the rule this dataset lives or dies by: **never infer, interpolate or estimate a
+score, and never record a figure measured on a different variant.** A blank cell has to keep meaning
+"nobody published this".
+
 ### Regenerating
 
 ```bash
+node tools/audit.js        # what's missing — new releases, gaps, sparse benchmarks
 node tools/build.js        # rewrites models/*.html from the data
 node tools/check-links.js  # verifies links and data/page parity
 ```
+
+`audit.js` is what makes a refresh targeted rather than a re-read: it prints the newest model on
+file, every model with no or few published scores, the sparsest benchmarks, the valid `scores` keys,
+and every slug already taken. `--json` for a structured version.
 
 `build.js` deletes stale pages first, so removing a model from the data removes its page. CI runs
 both on every push, so the deployed site cannot drift from `assets/models.js`.
