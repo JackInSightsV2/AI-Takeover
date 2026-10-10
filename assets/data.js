@@ -94,7 +94,7 @@ const MILESTONES = [
     metr: '~15 hr', swe: '—', gdpval: '—', frontier: '18.7%', reach: '—'
   },
   {
-    v: 53, date: 'Jul 2026', era: 'Now', now: true, major: true,
+    v: 53, date: 'Jul 2026', era: 'July snapshot', now: true, major: true,
     models: ['Claude Opus 5', 'Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'Grok 4.5'],
     head: 'SWE-bench Verified is effectively saturated at 97%. Opus 5 sits 861 Elo above the human-expert baseline on GDPval-AA v2. A 2.8-trillion-parameter open-weight model lands within a point of the closed frontier — capability now leaks in weeks, not years.',
     metr: '~17 hr †', swe: '97.0%', gdpval: '1861 Elo', frontier: '43.3%', reach: '49% of occupations'

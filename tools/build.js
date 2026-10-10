@@ -40,12 +40,12 @@ function page(m, prev, next) {
   const specs = [
     ['Lab', m.lab],
     ['Released', m.d],
-    ['Weights', m.open ? 'Open' : 'Closed'],
+    ['Weights', m.open === true ? 'Open' : m.open === false ? 'Closed' : 'Unverified'],
     m.licence ? ['Licence', m.licence] : null,
     m.params ? ['Parameters', m.params] : null,
     m.ctx ? ['Context', m.ctx] : null,
     m.price ? ['Price', m.price] : null,
-    ['Index position', m.idx + ' / 100']
+    ['Index position (derived)', Number.isFinite(m.idx) ? m.idx + ' / 100' : 'Not assessed']
   ].filter(Boolean);
 
   const scoreCards = scoreIds.map(id => {
@@ -71,10 +71,9 @@ function page(m, prev, next) {
 
   const results = scoreIds.length
     ? '<div class="scoregrid">\n          ' + scoreCards + '\n        </div>'
-    : '<p class="nores">' + esc(m.lab) + ' published no benchmark figures for ' + esc(m.m) +
-      ' that we could verify against a named evaluation. That is common — most releases are announced ' +
-      'with a capability narrative rather than a scoreboard — and it is left blank here rather than ' +
-      'filled with an estimate.</p>';
+    : '<p class="nores">' + esc(m.lab) + ' has no benchmark figures recorded here for ' + esc(m.m) +
+      ' against the evaluations tracked here. Published results may use different versions, tools or ' +
+      'specialist measures. We leave these cells blank rather than estimate comparable scores.</p>';
 
   const pn = (mm, dir) => mm
     ? '<a class="pn pn--' + dir + '" href="' + mm.slug + '.html">' +
@@ -131,11 +130,12 @@ function page(m, prev, next) {
     <div class="mp__tags">
       <span class="chip">${esc(m.lab)}</span>
       <span class="chip">${esc(m.d)}</span>
-      <span class="tagw"${m.open ? ' data-open' : ''}>${m.open ? 'Open weights' : 'Closed weights'}</span>
+      <span class="tagw"${m.open ? ' data-open' : ''}>${m.open === true ? 'Open weights' : m.open === false ? 'Closed weights' : 'Weights unverified'}</span>
       ${m.licence ? '<span class="chip">' + esc(m.licence) + '</span>' : ''}
     </div>
 
     <p class="mp__note">${esc(m.note)}</p>
+${m.sources?.length ? '<ul class="srcs" aria-label="Model sources">' + m.sources.map(s => '<li><a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + '</a></li>').join('') + '</ul>' : ''}
 
     <dl class="specs">
       ${specs.map(([k, v]) => '<div><dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd></div>').join('\n      ')}
@@ -145,7 +145,7 @@ function page(m, prev, next) {
       <h2>Published results</h2>
       <p>${scoreIds.length
         ? 'Only figures published by ' + esc(m.lab) + ' or an independent evaluator. Bars are relative to the best published score on that benchmark by any model.'
-        : 'Nothing published against a named evaluation.'}</p>
+        : 'No comparable results verified in this refresh.'}</p>
     </div>
 
     ${results}
@@ -154,9 +154,9 @@ function page(m, prev, next) {
   <section class="ledger wrap">
     <div class="sec-head">
       <h2>Where it sits</h2>
-      <p>${esc(m.m)} places at <strong>${m.idx}</strong> on the Displacement Index — the composite of
-         expert-parity rate, autonomy horizon and deployment reach described in the
-         <a href="../index.html#method" style="color:var(--ai)">method</a>. The index runs 0 to 100.</p>
+      <p>${Number.isFinite(m.idx)
+        ? esc(m.m) + ' has a derived index position of <strong>' + m.idx + '</strong> / 100 in the historical snapshot. See the <a href="../index.html#method">method</a>.'
+        : 'Not assessed on the Displacement Index. Inclusion in the October catalogue does not assign a displacement percentage. Specialist models and new releases may not have comparable evidence.'}</p>
     </div>
     <div class="prevnext">
       ${pn(prev, 'prev')}
@@ -177,7 +177,7 @@ function page(m, prev, next) {
     </ul>
     <p class="foot__note">
       Figures are quoted as published by their maintainers, the releasing lab, or independent evaluators.
-      Blank means unpublished, never zero. This page is generated from <code>assets/models.js</code> by
+      Blank means not recorded or not verified here, never zero. This page is generated from <code>assets/models.js</code> by
       <code>tools/build.js</code> — edit the data, not the HTML.
     </p>
   </div>
