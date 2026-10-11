@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install check dependencies
+        run: npm ci
+
       # regenerate the per-model pages from assets/models.js so the
       # deployed site can never drift from the data
       - name: Build model pages
@@ -40,6 +43,12 @@ jobs:
 
       - name: Verify internal links
         run: node tools/check-links.js
+
+      - name: Verify robot and timeline interactions
+        run: npm run check:interactions
+
+      - name: Remove test dependencies from site artifact
+        run: rm -rf node_modules
 
       - uses: actions/configure-pages@v5
 

@@ -1,0 +1,13 @@
+{
+  "name": "displacement-index",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build.js",
+    "check:links": "node tools/check-links.js",
+    "check:interactions": "node tools/check-interactions.js",
+    "test": "npm run build && npm run check:links && npm run check:interactions"
+  },
+  "devDependencies": {
+    "linkedom": "0.18.12"
+  }
+}
