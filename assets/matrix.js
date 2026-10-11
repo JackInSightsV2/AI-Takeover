@@ -38,17 +38,11 @@
     return num(v, ev);
   }
 
-  /* best published value per evaluation, for the leader highlight */
-  const best = {};
-  EVALS.forEach(ev => {
-    if (ev.text) return;
-    const vals = MODELS.map(m => m.scores[ev.id]).filter(v => typeof v === 'number');
-    if (vals.length) best[ev.id] = Math.max(...vals);
-  });
+  const best = comparisonBest(MODELS, EVALS);
 
   /* ---- capability rank, for the "Top first" arrangement ----
-     Mean share of the best published figure across the benchmarks a model
-     actually reports. Needs two or more published scores to rank at all,
+     Mean share of the best eligible figure across explicitly chosen cohorts.
+     Needs two or more audited, compatible scores to rank at all,
      so a model that published one flattering number can't top the table.
      It still favours models that report selectively — stated in the UI. */
   const LABS = [...new Set(MODELS.map(m => m.lab))]
@@ -60,7 +54,7 @@
     EVALS.forEach(ev => {
       if (ev.text || !best[ev.id]) return;
       const v = m.scores[ev.id];
-      if (typeof v === 'number') shares.push(v / best[ev.id]);
+      if (comparableScore(m, ev)) shares.push(v / best[ev.id]);
     });
     m._n = shares.length;
     m._rank = shares.length >= 2
@@ -117,7 +111,7 @@
                   '<span class="mx-model__d">' +
                     (state.arrange === 'rank' && m._rank >= 0
                       ? Math.round(m._rank * 100) + '% of best'
-                      : esc(m.d)) +
+                      : esc(m.d) + (state.arrange === 'rank' ? ' · Unranked' : '')) +
                   '</span>' +
                 '</a>' +
               '</th>';
@@ -146,8 +140,8 @@
         const raw = m.scores[ev.id];
         const v = fmt(raw, ev);
         if (v == null) { body += '<td class="mx-na"' + edge + '></td>'; return; }
-        const lead = (!ev.text && raw === best[ev.id]) ? ' mx-best' : '';
-        body += '<td class="mx-v' + lead + '"' + edge + '>' + v + '</td>';
+        const lead = (comparableScore(m, ev) && raw === best[ev.id]) ? ' mx-best' : '';
+        body += '<td class="mx-v' + lead + '"' + edge + '><a href="models/' + m.slug + '.html#score-' + ev.id + '" title="' + esc(scoreEvidenceText(m, ev)) + '">' + v + (comparableScore(m, ev) ? '' : ' <span class="est">‡</span>') + '</a></td>';
       });
       body += '</tr>';
     });
@@ -157,7 +151,7 @@
 
     const cells = models.reduce((n, m) => n + Object.keys(m.scores).length, 0);
     $('#matrixCount').textContent =
-      models.length + ' models · ' + cells + ' published figures · ' +
+      models.length + ' models · ' + cells + ' recorded figures · ' +
       Math.round(100 * cells / (models.length * EVALS.length)) + '% of the grid';
 
     /* show the strongest models for Top first; otherwise land on the present */
@@ -215,7 +209,7 @@
     [MODELS.length, 'models', 'from ' + new Set(MODELS.map(m => m.lab)).size + ' labs'],
     [EVALS.length, 'evaluations', 'across ' + new Set(EVALS.map(e => e.group)).size + ' categories'],
     [Math.round(100 * filledCells / totalCells) + '%', 'of the grid recorded', filledCells + ' of ' + totalCells + ' cells'],
-    [withScores, 'models with any score', (MODELS.length - withScores) + ' have no verified scores recorded'],
+    [withScores, 'models with any score', (MODELS.length - withScores) + ' have no scores recorded'],
     [openCount, 'open-weight', Math.round(100 * openCount / MODELS.length) + '% of the roster'],
     [widest.n, 'widest coverage', widest.ev.name]
   ].map(([v, k, sub]) =>

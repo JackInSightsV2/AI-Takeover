@@ -14,18 +14,12 @@ const OUT = path.join(ROOT, 'models');
 
 /* ---- load the data without a module system ---- */
 const src = fs.readFileSync(path.join(ROOT, 'assets', 'models.js'), 'utf8');
-const { EVALS, MODELS } = new Function(src + '\nreturn { EVALS, MODELS };')();
+const { EVALS, MODELS, comparableScore, comparisonBest, scoreEvidenceText } = new Function(src + '\nreturn { EVALS, MODELS, comparableScore, comparisonBest, scoreEvidenceText };')();
 
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
 const dagger = (s) => s.replace('†', '<span class="est">†</span>');
 
-/* best published value per numeric evaluation */
-const best = {};
-EVALS.forEach(ev => {
-  if (ev.text) return;
-  const vals = MODELS.map(m => m.scores[ev.id]).filter(v => typeof v === 'number');
-  if (vals.length) best[ev.id] = Math.max(...vals);
-});
+const best = comparisonBest(MODELS, EVALS);
 
 const byId = Object.fromEntries(EVALS.map(e => [e.id, e]));
 
@@ -52,18 +46,25 @@ function page(m, prev, next) {
     const ev = byId[id];
     const raw = m.scores[id];
     const isNum = typeof raw === 'number';
-    const lead = isNum && raw === best[id];
+    const eligible = comparableScore(m, ev);
+    const evidence = m.scoreEvidence[id];
+    const lead = eligible && raw === best[id];
     /* Elo is whole; everything else carries one decimal so scales read alike */
     const val = isNum
       ? (ev.unit === ' Elo' ? String(raw) : raw.toFixed(1)) + (ev.unit || '')
       : dagger(esc(raw));
-    const pct = isNum && best[id] ? Math.max(2, Math.round(100 * raw / best[id])) : 0;
+    const pct = eligible && best[id] ? Math.max(2, Math.round(100 * raw / best[id])) : 0;
     return '' +
-      '<div class="sc' + (lead ? ' sc--lead' : '') + '">' +
+      '<div id="score-' + id + '" class="sc' + (lead ? ' sc--lead' : '') + '">' +
         '<span class="sc__v">' + val + '</span>' +
         '<span class="sc__n">' + esc(ev.name) + '</span>' +
         '<span class="sc__d">' + esc(ev.desc) + '</span>' +
-        (isNum && best[id]
+        '<span class="sc__d">' + esc(scoreEvidenceText(m, ev)) + '</span>' +
+        '<span class="sc__d">' + (/^https?:\/\//.test(evidence.source || '')
+          ? '<a href="' + esc(evidence.source) + '" rel="noopener">Score source</a>' +
+            (evidence.locator ? ' — ' + esc(evidence.locator) : '')
+          : 'Score source: not recorded') + '</span>' +
+        (eligible && best[id]
           ? '<span class="sc__bar"><i style="width:' + pct + '%"></i></span>'
           : '') +
       '</div>';
@@ -144,7 +145,7 @@ ${m.sources?.length ? '<ul class="srcs" aria-label="Model sources">' + m.sources
     <div class="sec-head">
       <h2>Published results</h2>
       <p>${scoreIds.length
-        ? 'Only figures published by ' + esc(m.lab) + ' or an independent evaluator. Bars are relative to the best published score on that benchmark by any model.'
+        ? 'Historical figures are preserved with per-score evidence status. Bars and leaders require audited sources and matching versions and settings, with at least two eligible models.'
         : 'No comparable results verified in this refresh.'}</p>
     </div>
 

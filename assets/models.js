@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------
    models.js — the roster and the evaluation matrix.
 
-   A blank cell means the lab did not publish that number, not that the
-   model scored zero. Nothing here is interpolated, averaged or inferred.
+   A blank cell means no figure is recorded here, not a score of zero.
+   Legacy figures are preserved; per-score evidence records their audit status.
 
    Where a figure carries a material qualifier — a Pro/Heavy variant, a
    tools-enabled run, a vendor number independent evaluators dispute —
@@ -43,7 +43,7 @@ const EVALS = [
   { id:'gpqa',     name:'GPQA Diamond',       short:'GPQA Diamond',  unit:'%',    group:'Reasoning',
     desc:'Graduate-level science questions written to be Google-proof. PhD experts score roughly 65–70%.' },
   { id:'aime',     name:'AIME',               short:'AIME',          unit:'%',    group:'Reasoning',
-    desc:'Competition mathematics. The contest year varies by release — each model\'s page names it.' },
+    desc:'Competition mathematics. Contest years must match before comparing scores; unknown years are excluded.' },
   { id:'math500',  name:'MATH-500',           short:'MATH-500',      unit:'%',    group:'Reasoning',
     desc:'Competition mathematics. Effectively saturated since early 2025.' },
   { id:'mmlu',     name:'MMLU',               short:'MMLU',          unit:'%',    group:'Knowledge',
@@ -62,7 +62,7 @@ const EVALS = [
 
 /* ------------------------------------------------------------------
    idx — where the model sits on the Displacement Index (derived).
-   scores — only what the lab or an independent evaluator published.
+   scores — recorded figures; scoreEvidence tracks provenance separately.
 ------------------------------------------------------------------ */
 
 const MODELS = [
@@ -391,3 +391,67 @@ const MODELS = [
 
 /* sort once, oldest first — every view depends on this order */
 MODELS.sort((a, b) => a.y - b.y);
+
+/* Source associations carried forward from docs/research-models-october-2026.md.
+   These nine figures were documented there, but settings were not captured.
+   This migration does not promote that prior research to a fresh audit. */
+const DOCUMENTED_SCORE_SOURCES = {
+  'qwen-3-5': 'https://huggingface.co/Qwen/Qwen3.5-397B-A17B',
+  'qwen-3-8-2-4t': 'https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B',
+  'qwen-3-8-27b': 'https://huggingface.co/Qwen/Qwen3.8-27B',
+  'qwen-3-8-flash-next': 'https://huggingface.co/Qwen/Qwen3.8-Flash-Next'
+};
+MODELS.forEach(model => {
+  const source = DOCUMENTED_SCORE_SOURCES[model.slug];
+  if (!source) return;
+  model.scoreEvidence = Object.fromEntries(Object.keys(model.scores).map(id => [id, {
+    status: 'documented', source,
+    locator: model.m + ' column, ' + id + ' row (October research record)',
+    version: id === 'hle' ? 'original' : id === 'gpqa' ? 'Diamond' : null,
+    ...model.scoreEvidence?.[id]
+  }]));
+});
+
+/* Per-score evidence. Missing metadata is deliberately unaudited, even when a
+   model has release sources. See docs/benchmark-provenance.md for the contract. */
+MODELS.forEach(model => {
+  model.scoreEvidence = Object.fromEntries(Object.keys(model.scores).map(id => [id, {
+    status: 'unaudited', source: null, locator: null, checkedAt: null,
+    version: null, settings: null, ...model.scoreEvidence?.[id]
+  }]));
+});
+
+/* One explicit comparison cohort per row. No implicit selection of a year,
+   harness, tool mode or model variant from the row title or model notes. */
+function comparableScore(model, evaluation) {
+  const evidence = model.scoreEvidence?.[evaluation.id];
+  const cohort = evaluation.comparison;
+  return !evaluation.text && Number.isFinite(model.scores[evaluation.id]) &&
+    evidence?.status === 'audited' &&
+    /^https?:\/\//.test(evidence.source || '') &&
+    typeof evidence.locator === 'string' && evidence.locator.trim().length > 0 &&
+    /^\d{4}-\d{2}-\d{2}$/.test(evidence.checkedAt || '') &&
+    typeof cohort?.version === 'string' && cohort.version.trim().length > 0 &&
+    typeof cohort?.settings === 'string' && cohort.settings.trim().length > 0 &&
+    evidence.version === cohort.version && evidence.settings === cohort.settings;
+}
+
+function comparisonBest(models, evaluations) {
+  const best = {};
+  evaluations.forEach(evaluation => {
+    const values = models.filter(model => comparableScore(model, evaluation))
+      .map(model => model.scores[evaluation.id]);
+    // A lone result is not a field leader.
+    if (values.length >= 2) best[evaluation.id] = Math.max(...values);
+  });
+  return best;
+}
+
+function scoreEvidenceText(model, evaluation) {
+  const evidence = model.scoreEvidence[evaluation.id];
+  return 'Status: ' + evidence.status +
+    ' · Version: ' + (evidence.version || 'unknown') +
+    ' · Settings: ' + (evidence.settings || 'unknown') +
+    ' · Checked: ' + (evidence.checkedAt || 'not audited') +
+    (comparableScore(model, evaluation) ? ' · Eligible for comparison' : ' · Excluded from comparison');
+}

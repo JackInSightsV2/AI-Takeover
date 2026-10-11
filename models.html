@@ -43,7 +43,7 @@
       twenty-four published evaluations. Models run across the top in release order, evaluations down the side.
       General-purpose and specialist releases are included; restricted access is labelled on model pages.
       This is a sourced catalogue, not an exhaustive registry of every fine-tune. The table opens on the latest releases — scroll left to travel back to 2022. The first column and the header row
-      stay put, and the best published figure on each benchmark is highlighted.
+      stay put, and only audited figures with matching versions and settings qualify for leader highlights.
     </p>
 
     <div class="coverage" id="coverage"></div>
@@ -89,11 +89,10 @@
       </div>
 
       <p class="ranknote" id="rankNote" hidden>
-        <strong>How this ranks.</strong> Each model scores the mean share of the best published figure across
-        the benchmarks it actually reports, and needs at least two published scores to rank at all — so no
-        model can top the table on one flattering number. It still rewards selective reporting: a model that
-        published only its two strongest results will sit higher than it deserves. Read it as a rough ordering,
-        not a league table.
+        <strong>How this ranks.</strong> Mean share of the best eligible figure, requiring at least two
+        audited scores in matching benchmark-version and evaluation-settings cohorts. Each cohort needs
+        at least two models. Unaudited, unknown-version and incompatible figures are excluded.
+        Models without enough eligible scores are labelled unranked. Selective reporting still biases this ordering.
       </p>
     </div>
 
@@ -104,9 +103,9 @@
     </div>
 
     <p class="foot__note" style="margin-top:22px">
-      Figures are quoted as published by their maintainers, the releasing lab, or independent evaluators, at the
-      dates shown. Where a lab published a range or revised a score after launch, the note on the model's own
-      page says so. Every model name links to its page.
+      Historical figures are preserved, not newly verified. <span class="est">‡</span> means excluded
+      from comparisons. Select any score for its source, audit status, benchmark version and evaluation settings.
+      Unknown metadata stays unknown; a model release link is not evidence for a score.
       <span class="est">†</span> marks an extrapolation rather than a measurement.
     </p>
   </section>
