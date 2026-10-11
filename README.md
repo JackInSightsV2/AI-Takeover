@@ -104,7 +104,7 @@ tools/audit.js        reports dataset gaps, to target a research refresh
   model actually reports, and requires two or more published scores to rank at all. It still rewards
   selective reporting, and the page says so in place rather than presenting it as a league table.
 - **`models/<slug>.html`** — one page per model, all identical in format: specs, every published
-  score with a bar relative to the field best, index position, and previous/next by release date.
+  score with per-score evidence, eligible comparison bars, index position, and previous/next by release date.
   Generated, never hand-edited.
 
 ### Keeping it current
@@ -168,3 +168,9 @@ the URL records both choices. Model-page company badges link straight to that la
 the recorded date precision, without deriving days from ordering values.
 Run `node tools/check-interactions.js` with `linkedom` available on NODE_PATH for DOM regression checks.
 These do not replace browser visual verification.
+
+### Benchmark provenance
+
+See [the per-score evidence contract](docs/benchmark-provenance.md). Historical scores remain
+visible; only audited sources with matching versions and evaluation settings can contribute
+to leaders, relative bars or rank. Run `node tools/check-provenance.js` after rebuilding.
