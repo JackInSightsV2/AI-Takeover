@@ -154,9 +154,9 @@
       models.length + ' models · ' + cells + ' recorded figures · ' +
       Math.round(100 * cells / (models.length * EVALS.length)) + '% of the grid';
 
-    /* land on the present, not on the empty 2022 columns */
+    /* show the strongest models for Top first; otherwise land on the present */
     const wrap = $('#matrixWrap');
-    wrap.scrollLeft = wrap.scrollWidth;
+    wrap.scrollLeft = state.arrange === 'rank' ? 0 : wrap.scrollWidth;
   }
 
   /* ---- lab chips, generated from whatever labs exist ---- */
