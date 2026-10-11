@@ -318,6 +318,11 @@ const MODELS = [
   { slug:'claude-opus-5', m:'Claude Opus 5', lab:'Anthropic', d:'Jul 2026', y:2026.55, open:false, idx:53,
     note:'Leads SWE-bench Verified, GDPval-AA and ARC-AGI-3 simultaneously — the last at roughly four times the next model. Best-in-class on OSWorld 2.0 at about a third of Fable 5\'s cost, though no headline percentage was published.',
     scores:{ swe:97.0, frontier:43.3, arc3:30.2, gdp:1861, metr:'~17 hr †' } },
+  { slug:'mai-code-1-1-flash', m:'MAI-Code-1.1-Flash', lab:'Microsoft', d:'Aug 2026', y:2026.62, open:false, ctx:'256K',
+    price:'$0.20/M in, $0.02/M cached, $1.20/M out',
+    note:'Microsoft says the model is 22% better on Terminal-Bench 2.1 in GitHub Copilot CLI and 25% more token-efficient than its June 2026 predecessor, with a quarter of the cost. The release does not provide a standalone benchmark number that matches the site\'s standard matrix, so no published score cells were added.',
+    scores:{},
+    sources:[{label:'Official release / model documentation',url:'https://microsoft.ai/news/mai-code-1-1-flash-br-better-faster-at-a-quarter-of-the-cost/'},{label:'GitHub Copilot / model overview',url:'https://github.com/microsoft/MAI-Code'}] },
 
   // October 2026 research refresh. No new displacement position inferred.
   {"slug": "gpt-6-astra", "m": "GPT-6 Astra", "lab": "OpenAI", "d": "Sep 2026", "y": 2026.6712, "open": false, "note": "Released 3 September for complex reasoning, coding and computer use.", "scores": {}, "sources": [{"label": "Official release / model documentation", "url": "https://developers.openai.com/api/docs/changelog"}]},
