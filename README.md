@@ -130,6 +130,25 @@ node tools/check-links.js  # verifies links and data/page parity
 file, every model with no or few published scores, the sparsest benchmarks, the valid `scores` keys,
 and every slug already taken. `--json` for a structured version.
 
+The audit separates missing evidence from explicit benchmark exclusions in
+`assets/benchmark-exclusions.json`. Each rule names model slugs, evaluation IDs and a reason,
+based on the existing model notes and their linked sources. These are editorial applicability
+classifications, not a fresh verification of provider capabilities. The initial 27 constrained
+specialists exclude 648 cells: raw coverage stays 154/3,072 (5.0%), while applicable coverage is
+154/2,424 (6.4%), with 2,270 missing cells and 48 scoreless research targets.
+
+Unclassified blanks remain missing evidence; the word “Specialist” alone never excludes a model.
+Voice dialogue, security, science and decision models remain candidates pending a narrower review.
+Rules list IDs explicitly so new evaluations default to missing evidence. Partial exclusions are
+supported. Unknown slugs/IDs, duplicate exclusions, missing reasons and exclusions conflicting
+with published scores fail the audit. Zero scores and text horizons count as published evidence.
+The JSON retains raw `totalCells`/`pctFilled` and adds applicable, missing and N/A totals plus
+per-evaluation denominators and exclusion reasons. A zero applicable denominator has a null
+percentage and is omitted from sparse research targets. Models with no remaining applicable
+gaps are omitted from score research targets. The website matrix and generated pages are unchanged.
+
+Run `node --test tools/audit.test.js` for audit regression checks.
+
 `build.js` deletes stale pages first, so removing a model from the data removes its page. CI runs
 both on every push, so the deployed site cannot drift from `assets/models.js`.
 
