@@ -121,7 +121,7 @@ tools/audit.js        reports dataset gaps, to target a research refresh
   model actually reports, and requires two or more published scores to rank at all. It still rewards
   selective reporting, and the page says so in place rather than presenting it as a league table.
 - **`models/<slug>.html`** — one page per model, all identical in format: specs, every published
-  score with a bar relative to the field best, index position, and previous/next by release date.
+  score with per-score evidence, eligible comparison bars, index position, and previous/next by release date.
   Generated, never hand-edited.
 
 ### Keeping it current
@@ -146,6 +146,25 @@ node tools/check-links.js  # verifies links and data/page parity
 `audit.js` is what makes a refresh targeted rather than a re-read: it prints the newest model on
 file, every model with no or few published scores, the sparsest benchmarks, the valid `scores` keys,
 and every slug already taken. `--json` for a structured version.
+
+The audit separates missing evidence from explicit benchmark exclusions in
+`assets/benchmark-exclusions.json`. Each rule names model slugs, evaluation IDs and a reason,
+based on the existing model notes and their linked sources. These are editorial applicability
+classifications, not a fresh verification of provider capabilities. The initial 27 constrained
+specialists exclude 648 cells: raw coverage stays 154/3,072 (5.0%), while applicable coverage is
+154/2,424 (6.4%), with 2,270 missing cells and 48 scoreless research targets.
+
+Unclassified blanks remain missing evidence; the word “Specialist” alone never excludes a model.
+Voice dialogue, security, science and decision models remain candidates pending a narrower review.
+Rules list IDs explicitly so new evaluations default to missing evidence. Partial exclusions are
+supported. Unknown slugs/IDs, duplicate exclusions, missing reasons and exclusions conflicting
+with published scores fail the audit. Zero scores and text horizons count as published evidence.
+The JSON retains raw `totalCells`/`pctFilled` and adds applicable, missing and N/A totals plus
+per-evaluation denominators and exclusion reasons. A zero applicable denominator has a null
+percentage and is omitted from sparse research targets. Models with no remaining applicable
+gaps are omitted from score research targets. The website matrix and generated pages are unchanged.
+
+Run `node --test tools/audit.test.js` for audit regression checks.
 
 `build.js` deletes stale pages first, so removing a model from the data removes its page. CI runs
 both on every push, so the deployed site cannot drift from `assets/models.js`.
@@ -185,3 +204,9 @@ the URL records both choices. Model-page company badges link straight to that la
 the recorded date precision, without deriving days from ordering values.
 Run `npm ci` followed by `npm run check:interactions` for DOM regression checks.
 These do not replace browser visual verification.
+
+### Benchmark provenance
+
+See [the per-score evidence contract](docs/benchmark-provenance.md). Historical scores remain
+visible; only audited sources with matching versions and evaluation settings can contribute
+to leaders, relative bars or rank. Run `node tools/check-provenance.js` after rebuilding.
