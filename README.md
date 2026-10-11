@@ -4,12 +4,19 @@ An interactive, benchmark-grounded reading of how much human knowledge work fron
 
 Drag a single slider from **Human** to **Machine**. A robot fills. Thirty-six occupations move between a
 *Ceded* column and a *Held* column, and each one opens to show which of its constituent tasks have already
-crossed. Seventeen stops along the slider are dated model cohorts with their published benchmark figures
-attached, and a roster of **61 releases from 11 labs** fills in beneath as you move the line.
+crossed. Eighteen stops along the slider are dated model cohorts with their published benchmark figures
+attached, and a roster of **128 releases from 13 labs** fills in beneath as you move the line.
 
 Light theme by default, with a dark toggle in the header; the choice persists.
 
-Evidence current to **July 2026** — Claude Opus 5, Claude Fable 5, GPT-5.6 Sol, Kimi K3, Grok 4.5, GLM-5.2.
+Model and news review: **11 October 2026**. Release sources are linked on each new model page.
+The robot now defaults to the **October 2026 editorial assessment: 60/100**, up from July’s 53.
+This is a coarse judgement, not a measured percentage of jobs displaced. The homepage explains the evidence and limits.
+The July evidence archive and historical slider stop remain accessible.
+New releases without a derived index position display “Not assessed” and remain visible in the roster.
+The homepage briefing covers OpenAI/Hugging Face, Australian government systems, Anthropic’s October
+report, and British/US sentiment with separate publication, incident and survey dates.
+Research coverage and deliberate omissions: [October model review](docs/research-models-october-2026.md).
 
 ---
 
@@ -17,9 +24,9 @@ Evidence current to **July 2026** — Claude Opus 5, Claude Fable 5, GPT-5.6 Sol
 
 The site is deliberately explicit about the boundary between the two.
 
-**Measured, cited, checkable:**
+**Historical benchmark claims retained from the July snapshot (not re-audited in full this refresh):**
 
-| Signal | Latest | Source |
+| Signal | July snapshot | Source |
 | --- | --- | --- |
 | SWE-bench Verified | 97.0% — Claude Opus 5 (GPT-5.6 Sol 96.2%, Fable 5 95.0%, Kimi K3 93.4%) | swebench.com |
 | GDPval-AA v2 | 1861 Elo — Opus 5 (human expert baseline = 1000) | Artificial Analysis |
@@ -33,8 +40,8 @@ The site is deliberately explicit about the boundary between the two.
 
 **Derived, and labelled as such:**
 
-- The **Displacement Index** itself — an equally weighted composite of expert-parity rate, log-scaled
-  autonomy horizon, and deployment reach.
+- The **Displacement Index** itself — an editorial assessment informed by professional-work performance,
+  autonomous capability and adoption. The earlier claim of an equally weighted composite was incorrect: no normalization formula existed.
 - The **crossing point** assigned to each occupation. These read GDPval's occupational findings and each
   role's task mix, then place it on the same 0–100 scale. They are an argument, not a dataset.
 - The **2027 and 2028 stops**, which are the four-month doubling continued and nothing more. Marked `†`.
@@ -69,8 +76,8 @@ After that the workflow does the rest; it can also be run by hand from the Actio
 
 ```
 index.html            the interactive index — slider, robot, ledger, roster
-models.html           the evaluation matrix — 61 models across, 24 evals down
-models/<slug>.html    one generated page per model (61 of them)
+models.html           the evaluation matrix — 128 models across, 24 evals down
+models/<slug>.html    one generated page per model (128 of them)
 assets/data.js        MILESTONES, GATES, JOBS
 assets/models.js      EVALS + MODELS — the roster and every published score
 assets/styles.css     the design system; light tokens in :root, dark in [data-theme="dark"]
@@ -86,7 +93,7 @@ tools/audit.js        reports dataset gaps, to target a research refresh
 ### The three page types
 
 - **`index.html`** — the slider. Drag from Human to Machine and watch occupations move.
-- **`models.html`** — the matrix. 61 models across the top, 24 evaluations down the side. Sticky
+- **`models.html`** — the matrix. 128 models across the top, 24 evaluations down the side. Sticky
   header row and first column; opens scrolled to the present, scroll left for history. Best published
   figure per benchmark is highlighted. Filters:
   - **Company** — a chip per lab, with counts, generated from the data.
@@ -109,7 +116,7 @@ the last pass and scores newly published for models already listed, applies them
 
 The skill encodes the rule this dataset lives or dies by: **never infer, interpolate or estimate a
 score, and never record a figure measured on a different variant.** A blank cell has to keep meaning
-"nobody published this".
+"no comparable figure is recorded or verified here".
 
 ### Regenerating
 
@@ -128,11 +135,11 @@ both on every push, so the deployed site cannot drift from `assets/models.js`.
 
 To change a figure, add a model or move an occupation, edit the data files only — never the HTML.
 
-- `MILESTONES` — 17 stops. Each carries its models and the raw benchmark values shown in the console.
+- `MILESTONES` — 18 stops. Each carries its models and the raw benchmark values shown in the console.
   `major: true` gives a stop a printed label on the track; every stop still gets a mark and a tooltip.
-- `MODELS` — 61 releases, in `assets/models.js` alongside `EVALS`. `idx` places a model on the 0–100
+- `MODELS` — 128 releases, in `assets/models.js` alongside `EVALS`. `idx` places a model on the 0–100
   scale, which is what makes the roster dim and highlight as the slider moves. A key is simply absent
-  from `scores` where the lab published nothing.
+  from `scores` where no comparable published figure has been verified. New entries may omit `idx` until assessed.
 - `JOBS` — 36 occupations, each with a crossing point, the gate holding it, the evidence behind the
   placement, and constituent tasks with their own crossing points.
 
@@ -148,3 +155,16 @@ Issues and pull requests welcome — particularly ones that replace a derived nu
 ## Licence
 
 MIT for the code. Benchmark figures belong to their respective maintainers and are quoted as published.
+
+## October robot and company timelines
+
+The robot starts at 60% machine / 40% human. The denominator is the 100-point editorial scale,
+not employment, tasks, or a count of robots. The seven-point change is a judgement supported by newer
+same-version capability comparisons; adoption data is carried forward and no new METR horizon is invented.
+See [assessment sources and limitations](docs/october-assessment.md).
+
+Company timelines include all 128 catalogue entries across 13 labs. Select a lab and newest/oldest order;
+the URL records both choices. Model-page company badges link straight to that lab. Entries are grouped at
+the recorded date precision, without deriving days from ordering values.
+Run `node tools/check-interactions.js` with `linkedom` available on NODE_PATH for DOM regression checks.
+These do not replace browser visual verification.

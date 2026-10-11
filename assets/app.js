@@ -4,6 +4,9 @@
 (function () {
   'use strict';
 
+  document.querySelectorAll('[data-model-count]').forEach(el => el.textContent = MODELS.length);
+  document.querySelectorAll('[data-lab-count]').forEach(el => el.textContent = new Set(MODELS.map(m => m.lab)).size);
+
   const $  = (s) => document.querySelector(s);
   const TODAY = MILESTONES.find(m => m.now).v;
 
@@ -163,26 +166,26 @@
 
   /* shipped = released at or before this point on the line.
      frontier = the cohort defining capability at that moment. */
-  const shipped  = (m, v) => m.idx <= v;
+  const shipped  = (m, v) => Number.isFinite(m.idx) && m.idx <= v;
   const frontier = (m, v) => m.idx <= v && m.idx > v - 7;
 
   function paintRoster(v) {
     const rows = rosterRows();
     rosterBody.innerHTML = rows.map(m => {
-      const flag = frontier(m, v) ? ' data-live' : (shipped(m, v) ? '' : ' data-dim');
+      const flag = !Number.isFinite(m.idx) ? '' : frontier(m, v) ? ' data-live' : (shipped(m, v) ? '' : ' data-dim');
       return '<tr' + flag + '>' +
         '<td class="d">' + m.d + '</td>' +
         '<td class="m"><a href="models/' + m.slug + '.html">' + m.m + '</a></td>' +
         '<td class="lab">' + m.lab + '</td>' +
         cell(m.scores.swe, '%') + cell(m.scores.aa) + cell(m.scores.gdp) +
         '<td><span class="tagw"' + (m.open ? ' data-open' : '') + '>' +
-          (m.open ? 'Open' : 'Closed') + '</span></td>' +
+          (m.open === true ? 'Open' : m.open === false ? 'Closed' : 'Unverified') + '</span></td>' +
         '<td class="note">' + m.note + '</td>' +
       '</tr>';
     }).join('');
 
     const n = rows.filter(m => shipped(m, v)).length;
-    rosterCount.textContent = rows.length + ' shown · ' + n + ' released by this point';
+    rosterCount.textContent = rows.length + ' shown · ' + n + ' at or below this index position';
   }
 
   rosterBar.addEventListener('click', (e) => {

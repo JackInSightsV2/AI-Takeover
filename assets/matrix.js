@@ -4,6 +4,9 @@
 (function () {
   'use strict';
 
+  document.querySelectorAll('[data-model-count]').forEach(el => el.textContent = MODELS.length);
+  document.querySelectorAll('[data-lab-count]').forEach(el => el.textContent = new Set(MODELS.map(m => m.lab)).size);
+
   const $ = (s) => document.querySelector(s);
 
   /* ---- theme (shared behaviour with the index page) ---- */
@@ -211,8 +214,8 @@
   $('#coverage').innerHTML = [
     [MODELS.length, 'models', 'from ' + new Set(MODELS.map(m => m.lab)).size + ' labs'],
     [EVALS.length, 'evaluations', 'across ' + new Set(EVALS.map(e => e.group)).size + ' categories'],
-    [Math.round(100 * filledCells / totalCells) + '%', 'of the grid published', filledCells + ' of ' + totalCells + ' cells'],
-    [withScores, 'models with any score', (MODELS.length - withScores) + ' published none at all'],
+    [Math.round(100 * filledCells / totalCells) + '%', 'of the grid recorded', filledCells + ' of ' + totalCells + ' cells'],
+    [withScores, 'models with any score', (MODELS.length - withScores) + ' have no verified scores recorded'],
     [openCount, 'open-weight', Math.round(100 * openCount / MODELS.length) + '% of the roster'],
     [widest.n, 'widest coverage', widest.ev.name]
   ].map(([v, k, sub]) =>
