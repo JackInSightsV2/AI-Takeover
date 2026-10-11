@@ -128,7 +128,7 @@ function page(m, prev, next) {
     <div class="mp__head"><h1>${esc(m.m)}</h1></div>
 
     <div class="mp__tags">
-      <span class="chip">${esc(m.lab)}</span>
+      <a class="chip" href="../index.html?company=${encodeURIComponent(m.lab)}#company-timeline">${esc(m.lab)} · release timeline</a>
       <span class="chip">${esc(m.d)}</span>
       <span class="tagw"${m.open ? ' data-open' : ''}>${m.open === true ? 'Open weights' : m.open === false ? 'Closed weights' : 'Weights unverified'}</span>
       ${m.licence ? '<span class="chip">' + esc(m.licence) + '</span>' : ''}

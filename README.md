@@ -4,13 +4,15 @@ An interactive, benchmark-grounded reading of how much human knowledge work fron
 
 Drag a single slider from **Human** to **Machine**. A robot fills. Thirty-six occupations move between a
 *Ceded* column and a *Held* column, and each one opens to show which of its constituent tasks have already
-crossed. Seventeen stops along the slider are dated model cohorts with their published benchmark figures
+crossed. Eighteen stops along the slider are dated model cohorts with their published benchmark figures
 attached, and a roster of **128 releases from 13 labs** fills in beneath as you move the line.
 
 Light theme by default, with a dark toggle in the header; the choice persists.
 
 Model and news review: **11 October 2026**. Release sources are linked on each new model page.
-The slider and evidence table retain the **July 2026 historical snapshot**, not an October displacement estimate.
+The robot now defaults to the **October 2026 editorial assessment: 60/100**, up from July’s 53.
+This is a coarse judgement, not a measured percentage of jobs displaced. The homepage explains the evidence and limits.
+The July evidence archive and historical slider stop remain accessible.
 New releases without a derived index position display “Not assessed” and remain visible in the roster.
 The homepage briefing covers OpenAI/Hugging Face, Australian government systems, Anthropic’s October
 report, and British/US sentiment with separate publication, incident and survey dates.
@@ -38,8 +40,8 @@ The site is deliberately explicit about the boundary between the two.
 
 **Derived, and labelled as such:**
 
-- The **Displacement Index** itself — an equally weighted composite of expert-parity rate, log-scaled
-  autonomy horizon, and deployment reach.
+- The **Displacement Index** itself — an editorial assessment informed by professional-work performance,
+  autonomous capability and adoption. The earlier claim of an equally weighted composite was incorrect: no normalization formula existed.
 - The **crossing point** assigned to each occupation. These read GDPval's occupational findings and each
   role's task mix, then place it on the same 0–100 scale. They are an argument, not a dataset.
 - The **2027 and 2028 stops**, which are the four-month doubling continued and nothing more. Marked `†`.
@@ -133,7 +135,7 @@ both on every push, so the deployed site cannot drift from `assets/models.js`.
 
 To change a figure, add a model or move an occupation, edit the data files only — never the HTML.
 
-- `MILESTONES` — 17 stops. Each carries its models and the raw benchmark values shown in the console.
+- `MILESTONES` — 18 stops. Each carries its models and the raw benchmark values shown in the console.
   `major: true` gives a stop a printed label on the track; every stop still gets a mark and a tooltip.
 - `MODELS` — 128 releases, in `assets/models.js` alongside `EVALS`. `idx` places a model on the 0–100
   scale, which is what makes the roster dim and highlight as the slider moves. A key is simply absent
@@ -153,3 +155,16 @@ Issues and pull requests welcome — particularly ones that replace a derived nu
 ## Licence
 
 MIT for the code. Benchmark figures belong to their respective maintainers and are quoted as published.
+
+## October robot and company timelines
+
+The robot starts at 60% machine / 40% human. The denominator is the 100-point editorial scale,
+not employment, tasks, or a count of robots. The seven-point change is a judgement supported by newer
+same-version capability comparisons; adoption data is carried forward and no new METR horizon is invented.
+See [assessment sources and limitations](docs/october-assessment.md).
+
+Company timelines include all 128 catalogue entries across 13 labs. Select a lab and newest/oldest order;
+the URL records both choices. Model-page company badges link straight to that lab. Entries are grouped at
+the recorded date precision, without deriving days from ordering values.
+Run `node tools/check-interactions.js` with `linkedom` available on NODE_PATH for DOM regression checks.
+These do not replace browser visual verification.

@@ -28,6 +28,7 @@
       <nav class="site__nav">
         <a href="index.html" aria-current="page">The index</a>
         <a href="models.html">Matrix</a>
+        <a href="#company-timeline">Timelines</a>
       </nav>
       <button class="themer" id="themer" type="button" aria-label="Switch to dark theme" title="Switch theme">
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M2 12h2M20 12h2M4.9 19.1l1.5-1.5M17.6 6.4l1.5-1.5"/></svg>
@@ -41,7 +42,7 @@
 
   <!-- ─────────────────────────── HERO ─────────────────────────── -->
   <section class="hero wrap">
-    <p class="eyebrow">A measurement, not a prediction</p>
+    <p class="eyebrow">An assessment, grounded in evidence</p>
     <h1>
       Somewhere on this line<br>
       sits the <em>boundary</em> between<br>
@@ -52,7 +53,7 @@
       Faster, more capable models are arriving alongside evidence of agents exceeding their authority
       and public unease about the pace of change. Explore the releases below, or read
       <a href="#october-update">the October briefing</a>.
-      The slider retains the July benchmark snapshot: its derived index is not a measured percentage of jobs lost.
+      The robot now opens at <strong>60% machine / 40% human</strong> on the October editorial index. This is a judgement about capability, not a measured percentage of jobs lost. <a href="#october-evidence">See why it moved from 53 to 60</a>.
     </p>
     <a class="cue" href="#instrument">
       <span>Move the line</span>
@@ -156,23 +157,24 @@
           <div class="figures__split">
             <div class="fig fig--ai">
               <span class="fig__k">Machine</span>
-              <span class="fig__v" id="valAI">53</span><span class="fig__pc">%</span>
+              <span class="fig__v" id="valAI">60</span><span class="fig__pc">%</span>
             </div>
             <div class="fig fig--human">
               <span class="fig__k">Human</span>
-              <span class="fig__v" id="valHuman">47</span><span class="fig__pc">%</span>
+              <span class="fig__v" id="valHuman">40</span><span class="fig__pc">%</span>
             </div>
           </div>
 
           <div class="era">
             <div class="era__top">
-              <span class="era__date" id="eraDate">Jul 2026</span>
-              <span class="era__tag" id="eraTag">July snapshot</span>
+              <span class="era__date" id="eraDate">Oct 2026</span>
+              <span class="era__tag" id="eraTag">October assessment</span>
             </div>
             <div class="chips" id="eraModels"></div>
             <p class="era__head" id="eraHead"></p>
           </div>
 
+          <p class="assessment-note">Robot fill = editorial index / 100. <a href="#october-evidence">Evidence and rationale</a>; not jobs lost or robots deployed.</p>
           <dl class="metrics" id="metrics"></dl>
         </div>
       </div>
@@ -189,16 +191,64 @@
           <div class="track__fill" id="trackFill"></div>
           <div class="track__ticks" id="ticks"></div>
           <div class="track__knob" id="knob"></div>
-          <input id="range" type="range" min="0" max="100" step="0.5" value="53"
+          <input id="range" type="range" min="0" max="100" step="0.5" value="60"
                  aria-label="Displacement index: drag from fully human to fully machine">
         </div>
 
         <div class="slider__foot">
           <span>Drag, or use ← →. Every mark is a dated release; labelled ones are the turning points.</span>
-          <button class="reset" id="resetBtn" type="button">Return to July snapshot</button>
+          <button class="reset" id="resetBtn" type="button">Return to October assessment</button>
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="ledger wrap" id="october-evidence" aria-labelledby="assessment-title">
+    <div class="sec-head">
+      <p class="eyebrow">Reviewed 11 October 2026 · editorial index</p>
+      <h2 id="assessment-title">Why the robot moved from 53 to 60</h2>
+      <p>The seven-point increase is a coarse editorial judgement, not the output of a statistical model.
+      Professional-task capability and efficiency improved, while adoption and autonomous reliability remain constraints.
+      Release counts, security incidents and opinion polls do not enter the score.</p>
+    </div>
+    <div class="briefing-grid">
+      <article><h3>Stronger professional-task results</h3>
+        <p>On Anthropic’s September comparison, Opus 5.5 scores 1846 versus Opus 5’s 1708 on
+        <strong>GDPval-AA v2.1</strong>, and 66.4% versus 52.3% on <strong>Terminal-Bench 4.0</strong>.
+        Anthropic reports 40% lower typical costs. Evaluation settings and fallback safeguards matter.</p>
+        <p><a href="https://www.anthropic.com/claude-opus-5-5">22 September release and evaluation settings</a></p>
+        <p>These are same-version comparisons. July’s GDPval-AA v2 and Terminal-Bench 2.1 figures are not directly comparable.
+        The live v2.1 leaderboard is anchored to a model, not a human expert at 1000 Elo.</p>
+        <p><a href="https://artificialanalysis.ai/evaluations/gdpval-aa">Independent leaderboard and methodology</a></p>
+      </article>
+      <article><h3>Limits still hold the line</h3>
+        <p>METR’s September assessment finds incremental research gains and continuing weaknesses in long-horizon judgement,
+        not full automation of AI research. It does not supply a new comparable 50% time-horizon number here.</p>
+        <p><a href="https://metr.org/blog/2026-09-22-claude-opus-5-5/">METR’s independent evaluation</a></p>
+        <p>The 49% occupational-coverage figure is carried forward from Anthropic’s January report, pooling earlier samples.
+        It measures observed Claude use across at least a quarter of an occupation’s tasks, not jobs replaced or an October adoption rate.</p>
+        <p><a href="https://www.anthropic.com/research/economic-index-primitives">Adoption evidence and sample limits</a></p>
+      </article>
+    </div>
+    <p class="assessment-note">60 is a working interpretation, not a precise measurement or confidence bound.
+    Occupational crossing points remain editorial and were not re-estimated in this refresh.
+    The July snapshot and the separately labelled 2027/2028 projections remain available on the slider.</p>
+  </section>
+
+  <section class="ledger wrap" id="company-timeline" aria-labelledby="timeline-title">
+    <div class="sec-head"><p class="eyebrow">Company release history</p>
+      <h2 id="timeline-title">Follow a company through time</h2>
+      <p>Every release recorded in this catalogue, independent of the robot slider. Dates retain the source’s precision;
+      releases in the same month are grouped without implying an exact day. Coverage is not exhaustive.</p>
+    </div>
+    <div class="timeline-controls">
+      <label for="timelineCompany">Company <select id="timelineCompany"></select></label>
+      <label for="timelineOrder">Order <select id="timelineOrder"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label>
+      <a id="timelineLink" href="#company-timeline">Link to this timeline</a>
+    </div>
+    <p id="timelineSummary" role="status" aria-live="polite"></p>
+    <ol class="company-timeline" id="timelineList" tabindex="0" aria-label="Company releases, scroll for more"></ol>
+    <noscript>Enable JavaScript to select a company and view its releases. The <a href="models.html">matrix</a> and individual model pages remain available.</noscript>
   </section>
 
   <!-- ─────────────────────────── LEDGER ───────────────────────── -->
@@ -281,8 +331,8 @@
   <!-- ────────────────────────── EVIDENCE ──────────────────────── -->
   <section class="evidence wrap">
     <div class="sec-head">
-      <h2>The evidence</h2>
-      <p>Every position on the slider is anchored to one of these. Where a figure is extrapolated rather
+      <h2>The July evidence archive</h2>
+      <p>These historical figures informed the older slider positions; they have not all been re-audited. October evidence is listed separately above. Where a figure is extrapolated rather
          than measured it is marked&nbsp;<span class="est">†</span>.</p>
     </div>
 
@@ -373,11 +423,11 @@
     <div class="method__grid">
       <article>
         <h3>What the index is</h3>
-        <p>A composite of three published signals, equally weighted: <strong>expert-parity rate</strong>
-           (GDPval win-or-tie, and GDPval-AA Elo above the 1000-point human baseline), <strong>autonomy</strong>
-           (METR's 50% time horizon, log-scaled — each doubling is one step, not one hour), and
-           <strong>deployment reach</strong> (the Anthropic Economic Index share of occupations with a
-           quarter or more of their tasks running through the model).</p>
+        <p>An <strong>editorial 0–100 assessment</strong> informed by professional-work benchmarks,
+           autonomous-task evaluations and observed adoption. The robot fills to the selected index value;
+           the human side is 100 minus that value. These are points on a judgement scale, not shares of employment.
+           Earlier wording called this an equally weighted composite, but no normalization formula was implemented.
+           We have corrected that claim. GDPval-AA Elo is not a human-parity percentage.</p>
       </article>
       <article>
         <h3>What it is not</h3>
@@ -442,5 +492,6 @@
 <script src="assets/data.js"></script>
 <script src="assets/models.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/timeline.js"></script>
 </body>
 </html>

@@ -710,3 +710,26 @@ a.site__mark:hover{ color:var(--ai); }
 .briefing-grid p{color:var(--ink-2);font-size:15px;line-height:1.65;}
 .briefing-grid a{color:var(--ai);text-underline-offset:3px;}
 @media(max-width:680px){.briefing-grid{grid-template-columns:1fr;gap:24px;}}
+
+/* October assessment and company histories */
+.assessment-note { color: var(--ink-2); font-size: .85rem; line-height: 1.65; margin: 1rem 0; }
+.timeline-controls { display: flex; align-items: end; gap: 1.5rem; flex-wrap: wrap; margin: 1.5rem 0; }
+.timeline-controls label { display: grid; gap: .5rem; font-size: .85rem; }
+.timeline-controls select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: .4rem; padding: .65rem 2rem .65rem .7rem; min-width: 10rem; }
+.company-timeline { list-style: none; padding: 0 1rem 0 0; margin: 2rem 0; max-height: 42rem; overflow-y: auto; overscroll-behavior: contain; }
+.timeline-month { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1.5rem; }
+.timeline-month > h3 { font-family: var(--mono); font-size: .9rem; padding-top: 1rem; }
+.timeline-releases { list-style: none; margin: 0; padding: 0 0 1.5rem 1.5rem; border-left: 2px solid var(--ai); }
+.timeline-releases > li { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.timeline-model { font-size: 1.1rem; font-weight: 500; }
+.timeline-weight { display: inline-block; font-size: .7rem; margin: .3rem .8rem; color: var(--ink-2); }
+.timeline-releases p { line-height: 1.65; margin: .65rem 0; }
+.timeline-releases li > a:not(.timeline-model) { font-size: .8rem; }
+@media (max-width: 600px) {
+  .timeline-month { grid-template-columns: 1fr; gap: .25rem; }
+  .timeline-month > h3 { margin-bottom: .25rem; }
+  .timeline-controls { align-items: stretch; gap: 1rem; }
+  .timeline-controls label { flex: 1 1 9rem; }
+  .timeline-controls select { min-width: 0; width: 100%; }
+  .timeline-releases { padding-left: 1rem; }
+}
