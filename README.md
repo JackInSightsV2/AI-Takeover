@@ -52,17 +52,33 @@ Figures that are extrapolated rather than measured carry a `†` everywhere they
 
 ## Running it
 
-No build step, no dependencies, no framework. Open `index.html`, or:
+Viewing the site needs no build step, dependencies or framework. Open `index.html`, or:
 
 ```bash
 python3 -m http.server 8000
 # → http://localhost:8000
 ```
 
+### Checking a clean checkout
+
+Use Node.js 20 and npm (matching CI). The DOM checks use `linkedom` as a development-only
+dependency; `package-lock.json` pins the dependency tree. From the project root:
+
+```bash
+npm ci
+npm test
+```
+
+`npm test` rebuilds the model pages, verifies internal links and data/page parity, and runs
+the robot and timeline interaction checks. To run just the DOM checks after installation,
+use `npm run check:interactions`. No global installation or `NODE_PATH` setting is needed.
+These checks do not replace browser visual verification.
+
 ## Deploying to GitHub Pages
 
 Deployment is automated by `.github/workflows/pages.yml` — it builds the model pages, verifies every
-internal link, and publishes on each push to `main`.
+internal link and robot/timeline interactions, and publishes on each push to `main` only if
+all checks pass. Test dependencies are removed before packaging the site.
 
 One-time setup in the repo: **Settings → Pages → Build and deployment → Source: GitHub Actions.**
 After that the workflow does the rest; it can also be run by hand from the Actions tab
@@ -86,6 +102,7 @@ assets/matrix.js      matrix page: transposed table, filters, coverage
 assets/theme.js       theme toggle for the generated model pages
 tools/build.js        generates models/*.html from assets/models.js
 tools/check-links.js  fails the build on a broken link or data/page drift
+tools/check-interactions.js  checks robot and timeline DOM behaviour
 tools/audit.js        reports dataset gaps, to target a research refresh
 .claude/skills/       /refresh-models — research and update the dataset
 ```
@@ -185,7 +202,7 @@ See [assessment sources and limitations](docs/october-assessment.md).
 Company timelines include all 128 catalogue entries across 13 labs. Select a lab and newest/oldest order;
 the URL records both choices. Model-page company badges link straight to that lab. Entries are grouped at
 the recorded date precision, without deriving days from ordering values.
-Run `node tools/check-interactions.js` with `linkedom` available on NODE_PATH for DOM regression checks.
+Run `npm ci` followed by `npm run check:interactions` for DOM regression checks.
 These do not replace browser visual verification.
 
 ### Benchmark provenance
